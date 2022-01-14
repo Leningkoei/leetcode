@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "noEmitOnError": true
+    },
+    "include": [
+        "./src/test/main.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
