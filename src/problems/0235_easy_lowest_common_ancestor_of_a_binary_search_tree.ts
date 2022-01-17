@@ -6,10 +6,23 @@ export default function lowestCommonAncestor(
     p: TreeNode | null,
     q: TreeNode | null
 ): TreeNode | null {
-    const current: number | undefined = root ? root.val : undefined;
-    const left: number | undefined = root.left ? root.left.val : undefined;
-    const right: number | undefined = root.right ? root.right.val : undefined;
-    const pVal: number | undefined = p ? p.val : undefined;
-    const qVal: number | undefined = q ? q.val : undefined;
+    if (root) {
+        const currentVal: number = root.val;
+        const pVal: number | undefined = p ? p.val : undefined;
+        const qVal: number | undefined = q ? q.val : undefined;
+
+        if (
+            pVal <= currentVal && qVal >= currentVal ||
+            pVal >= currentVal && qVal <= currentVal
+        ) {
+            return root;
+        } else if (pVal <= currentVal && qVal <= currentVal) {
+            return lowestCommonAncestor(root.left, p, q);
+        } else if (pVal >= currentVal && qVal >= currentVal) {
+            return lowestCommonAncestor(root.right, p, q);
+        };
+    } else {
+        return null;
+    };
 };
 
