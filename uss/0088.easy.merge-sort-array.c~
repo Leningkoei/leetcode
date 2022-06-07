@@ -1,0 +1,72 @@
+#include <stddef.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+typedef void *any;
+typedef int *Array;
+
+typedef struct cons {
+  any current;
+  struct cons *rest;
+} *cons;
+cons makeCons(any current, cons rest) {
+  cons this =(cons)malloc(sizeof(cons));
+  this->current = current;
+  this->rest = rest;
+};
+any car(cons this) {
+  return this->current;
+};
+cons cdr(cons this) {
+  return this->rest;
+};
+cons SETCAR(cons this, any current) {
+  this->current = current;
+  return this;
+};
+cons SETCDR(cons this, any rest) {
+  this->rest = rest;
+  return this;
+};
+int listLength(cons this) {
+  return this?
+    (1+ (listLength(cdr(this)))):
+    0;
+};
+Array listToArray(cons this) {
+  int length = listLength(this);
+  Array result = (Array)malloc(sizeof(int) * length);
+  int iterator(int index, cons restList) {
+    if (restList) {
+      result[index] = *(int *)car(restList);
+      return iterator(1+ index, cdr(restList));
+    } else {
+      return 0;
+    };
+  };
+  iterator(0, this);
+  return result;
+};
+
+int main() {
+  int x = 1;
+  int y = 2;
+  int z = 3;
+  cons nil = NULL;
+  cons a = makeCons(&x, nil);
+  cons b = makeCons(&y, a);
+  cons c = makeCons(&z, b);
+
+  Array array = consToArray(c);
+
+  printf("%d\n", consLength(c));
+  printf("%d\n", array[2]);
+  printf("%d\n", array[1]);
+  printf("%d\n", array[0]);
+
+  free(c);
+  free(b);
+  free(a);
+
+  return 0;
+};
